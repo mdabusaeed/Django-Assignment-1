@@ -2,18 +2,21 @@ from pathlib import Path
 from decouple import config
 import dj_database_url
 import os
-DEBUG = True
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Secret key and debug mode
-SECRET_KEY = config('SECRET_KEY', default='your-default-secret-key')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
-
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-9ab2w4)bm8fw+lxjr=k4hm9+nvq7f*o8cf^2*f+7!l6ym7a=!3')
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 # Allowed hosts and CSRF trusted origins
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'http://127.0.0.1:8000']
 
 # Application definition
 INSTALLED_APPS = [
@@ -24,8 +27,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tasks',
-    'debug_toolbar',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -36,10 +41,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 if DEBUG:
-    INSTALLED_APPS += ['debug_toolbar']
     MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
-    INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -62,13 +66,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 # Database configuration
-
 DATABASES = {
     'default': dj_database_url.config(
         default='postgresql://event_management_db_vd2z_user:iPuFN2UgBOjBtSQMscKGfLoRwgLiNRgb@dpg-cub04qhopnds73efd9gg-a.oregon-postgres.render.com/event_management_db_vd2z',
         conn_max_age=600,
     )
 }
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
