@@ -2,6 +2,7 @@ from pathlib import Path
 from decouple import config
 import dj_database_url
 import logging
+import os
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +27,7 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'http://127.0.0.1:8000']
 
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,9 +39,10 @@ INSTALLED_APPS = [
     'tasks',  # Your app
 ]
 
-# Include debug toolbar if DEBUG is True
+# Add debug_toolbar only in debug mode
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,9 +55,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Add debug toolbar middleware if DEBUG is True
 if DEBUG:
-    MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -102,4 +104,7 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Internal IPs for Debug Toolbar
-INTERNAL_IPS = ['127.0.0.1']
+if DEBUG:
+    INTERNAL_IPS = [
+        '127.0.0.1',  # Localhost
+    ]
