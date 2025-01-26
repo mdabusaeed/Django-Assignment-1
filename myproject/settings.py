@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Secret key and debug mode
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-9ab2w4)bm8fw+lxjr=k4hm9+nvq7f*o8cf^2*f+7!l6ym7a=!3')
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = False
 
 # Allowed hosts and CSRF trusted origins
 ALLOWED_HOSTS = ['*']
