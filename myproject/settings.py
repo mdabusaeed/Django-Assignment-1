@@ -1,18 +1,26 @@
 from pathlib import Path
 from decouple import config
 import dj_database_url
-import os
 import logging
-
-# Logging configuration
-logging.basicConfig(level=logging.DEBUG)
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Logging
+logging.basicConfig(level=logging.DEBUG)
+
+# Static and media files
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Directory with your static files
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory to collect static files for deployment
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Secret key and debug mode
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-9ab2w4)bm8fw+lxjr=k4hm9+nvq7f*o8cf^2*f+7!l6ym7a=!3')
-DEBUG = False
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 # Allowed hosts and CSRF trusted origins
 ALLOWED_HOSTS = ['*']
@@ -29,12 +37,13 @@ INSTALLED_APPS = [
     'tasks',  # Your app
 ]
 
+# Include debug toolbar if DEBUG is True
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this after SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Ensure static files are served
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -43,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Add debug toolbar middleware if DEBUG is True
 if DEBUG:
     MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
 
@@ -87,16 +97,6 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Dhaka'
 USE_I18N = True
 USE_TZ = True
-
-# Static and media files
-STATIC_URL = '/static/'  # URL to access static files
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Directory where your static files are located
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory to collect static files for deployment
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Media files (Uploaded content)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
