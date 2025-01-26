@@ -8,7 +8,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Secret key and debug mode
 SECRET_KEY = config('SECRET_KEY', default='your-default-secret-key')
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
 
 # Allowed hosts and CSRF trusted origins
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1').split(',')
@@ -37,6 +38,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
+    MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
+    INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -59,13 +64,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 # Database configuration
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='postgres://username:password@hostname:5432/database_name'),
+        default=config('DATABASE_URL', default='postgres://postgres:1234@localhost:5432/event-management'),
         conn_max_age=600,
     )
 }
-
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
