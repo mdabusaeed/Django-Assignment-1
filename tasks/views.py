@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.utils.timezone import localdate, now
 
 # Create your views here.
+def home(request):
+    return render(request, 'dashboard/home.html') 
 
 def manager_dashboard(request):
     query_type = request.GET.get('type', 'all')
