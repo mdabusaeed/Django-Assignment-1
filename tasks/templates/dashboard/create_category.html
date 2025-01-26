@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Category</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body class="bg-gradient-to-br from-green-400 to-blue-500 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-3xl font-bold text-gray-700 text-center mb-6">Create Category</h1>
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            <div class="space-y-4">
+                {{ create_category.as_p }}
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:from-green-600 hover:to-blue-600 transition duration-300">
+                Save Category
+            </button>
+        </form>
+    </div>
+</body>
+</html>

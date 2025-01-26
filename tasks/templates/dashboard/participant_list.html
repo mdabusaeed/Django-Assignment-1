@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participant List</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold text-gray-700 text-center mb-8">Participant List</h1>
+        
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 bg-gray-200 font-bold text-gray-700 text-left">Participant Name</th>
+                        <th class="py-2 px-4 bg-gray-200 font-bold text-gray-700 text-left">Email</th>
+                        <th class="py-2 px-4 bg-gray-200 font-bold text-gray-700 text-left">Event Name(s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for participant in participants %}
+                    <tr class="border-b">
+                        <td class="py-2 px-4">{{ participant.name }}</td>
+                        <td class="py-2 px-4">{{ participant.email }}</td>
+                        <td class="py-2 px-4">
+                            {% for event in participant.events.all %}
+                                <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-sm">{{ event.name }}</span>
+                            {% empty %}
+                                <span class="text-gray-500">No Events</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="py-4 text-center text-gray-500">No participants found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

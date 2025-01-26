@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Featured Event Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <section class="w-full max-w-3xl bg-white rounded-lg shadow-md p-6">
+        <!-- Header -->
+        <div class="mb-6 text-center">
+            <p class="text-gray-500 text-sm font-bold uppercase">Featured Event</p>
+            <h1 class="text-3xl font-bold text-gray-800">Istanbul <span class="font-black">Wine Party 2018</span></h1>
+        </div>
+
+        <!-- Image Section -->
+        <div class="relative mb-6">
+            <img src="/images/all1.jpg" alt="Event Image" class="w-full h-auto rounded-lg">
+
+        </div>
+
+        <!-- Event Details -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 ">
+            <!-- Event Date -->
+            <div class="flex items-center gap-4 bg-gray-200 rounded-md min-h-[80px] min-w-[100px] p-1">
+                <div class="bg-yellow-500 text-white p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 4h10m4 0a2 2 0 012 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h16z" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-gray-500 text-sm">Event Date</p>
+                    <p class="text-gray-800 font-bold">26 DECEMBER 2018</p>
+                </div>
+            </div>
+            <!-- Event Time -->
+            <div class="flex items-center justify-center gap-4 bg-gray-200 rounded-md min-w-[100px] p-1">
+                <div class="bg-yellow-500 text-white p-3 rounded-full ">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      
+                </div>
+                <div>
+                    <p class="text-gray-500 text-sm">Event Time</p>
+                    <p class="text-gray-800 font-bold">15:00PM~22:00PM</p>
+                </div>
+            </div>
+            <!-- Event Location -->
+            <div class="flex items-center gap-4 bg-gray-200 rounded-md min-w-[100px] p-1">
+                <div class="bg-yellow-500 text-white p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                      </svg>
+                      
+                </div>
+                <div>
+                    <p class="text-gray-500 text-sm">Event Location</p>
+                    <p class="text-gray-800 font-bold">VANILA HOTEL</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="text-gray-600 text-sm leading-relaxed">
+            <p class="mb-4">
+                Lorem ipsum dolor sit amet the best consectetur diam adipiscing elites sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat insignia the consectetur adipiscing elit.
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet the best consectetur diam adipiscing elites sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat insignia the consectetur adipiscing elit.
+            </p>
+        </div>
+
+            <!-- Participant List Section -->
+    <!-- Participant List Section -->
+    <div class="flex flex-col gap-2 p-4 ">
+        <p class="flex item-center  justify-center text-gray-900 text-md  font-bold bg-gray-200">Participants</p>
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Individual Participant -->
+            <span class="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-md text-gray-800 text-sm font-medium hover:bg-gray-50">
+                John Doe
+            </span>
+            <span class="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-md text-gray-800 text-sm font-medium hover:bg-gray-50">
+                Jane Smith
+            </span>
+            <span class="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-md text-gray-800 text-sm font-medium hover:bg-gray-50">
+                Michael Brown
+            </span>
+            <span class="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-md text-gray-800 text-sm font-medium hover:bg-gray-50">
+                Sarah Johnson
+            </span>
+        </div>
+    </section>
+</body>
+</html>

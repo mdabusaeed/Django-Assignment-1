@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+</head>
+
+<body class="container mx-auto bg-gray-100 px-4">
+    <!-- Navbar for this website -->
+    <header>
+        <div class="container mx-auto flex justify-between items-center mt-4 ">
+            <h1 class="text-xl font-bold" >Dashboard</h1>
+            <div class="flex items-center gap-4">
+                <!-- Header Bell Icon -->
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                      </svg>                  
+                </div>
+                <!-- Header Profile -->
+                <div class="relative ml-3">
+                    <div>
+                      <button type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                        <span class="absolute -inset-1.5"></span>
+                        <span class="sr-only">Open user menu</span>
+                        <img class="size-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                      </button>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 ">
+        <!-- Total Work -->
+        <a href="{% url "manager-dashboard"%}?type=total_participants">
+        <div class="p-6 mt-4 bg-white rounded-xl shadow-sm">   
+            <h1 class="text-bold text-gray-600 font-medium text-sm mb-4">TOTAL NUMBER OF PARTICIPANTS</h1>
+            <div>
+                <div class="flex justify-between justify-center">
+                    <div>
+                        <p class="text-bold font-bold text-2xl" >{{total_participants}}</p>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-100 flex justify-center items-center rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                          </svg>
+                                           
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+        <!-- All Event -->
+    <a href="{% url "manager-dashboard"%}?type=all_events">
+        <div class="p-6 mt-4 bg-white rounded-xl shadow-sm">   
+            <h1 class="text-bold text-gray-600 font-medium text-sm mb-4">ALL EVENTS</h1>
+            <div>
+                <div class="flex justify-between justify-center">
+                    <div>
+                        <p class="text-bold font-bold text-2xl" >{{total_events}}</p>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-100 flex justify-center items-center rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                          </svg>
+                                           
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+        <!-- Past Event -->
+    <a href="{% url "manager-dashboard"%}?type=past_events ">
+        <div class="p-6 mt-4 bg-white rounded-xl shadow-sm">   
+            <h1 class="text-bold text-gray-600 font-medium text-sm mb-4">PAST EVENTS</h1>
+            <div>
+                <div class="flex justify-between justify-center">
+                    <div>
+                        <p class="text-bold font-bold text-2xl" >{{past_events}}</p>
+                    </div>
+                    <div class="w-10 h-10 bg-green-100 flex justify-center items-center rounded-full">
+                        <div class="h-6 w-6 text-green-600">                        
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>
+                                                           
+                        </div>
+               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+        <!-- Today's Events -->
+    <a href="{% url "manager-dashboard"%}?type=today_events ">
+        <div class="p-6 mt-4 bg-white rounded-xl shadow-sm">   
+            <h1 class="text-bold text-gray-600 font-medium text-sm mb-4">TODAY'S EVENTS</h1>
+            <div>
+                <div class="flex justify-between justify-center">
+                    <div>
+                        <p class="text-bold font-bold text-2xl" >{{today_events}}</p>
+    
+                    </div>
+                    <div class="w-10 h-10 bg-yellow-100 flex justify-center items-center rounded-full">
+                        <div class="h-6 w-6 text-yellow-600">                        
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>                              
+                        </div>                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+    <a href="{% url "manager-dashboard"%}?type=upcoming_events">
+        <!-- Up Coming Events -->
+        <div class="p-6 mt-4 bg-white rounded-xl shadow-sm">   
+            <h1 class="text-bold text-gray-600 font-medium text-sm mb-4">UPCOMING EVENTS</h1>
+            <div>
+                <div class="flex justify-between justify-center">
+                    <div>
+                        <p class="text-bold font-bold text-2xl" >{{upcoming_events}}</p>
+                    </div>
+                    <div class="w-10 h-10 bg-violet-100 flex justify-center items-center rounded-full">
+                        <div class="h-6 w-6 text-violet-600">                        
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                              </svg>
+                                                           
+                        </div>                 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </a>
+
+
+
+    <!-- Action Display Section -->
+    <div class="p-6 mt-4 bg-white rounded-xl shadow-sm">
+        <div class="flex items-center justify-between gap-4 mb-4">
+            <h1 class="text-2xl font-bold">EVENTS LIST</h1>
+    
+            <!-- Create Event Button -->
+            <a href="{% url 'create_event' %}" class="bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:from-gray-600 hover:to-gray-500 transition duration-300">
+                Create Event
+            </a>
+            <!-- Create Event Button -->
+            <a href="{% url 'create_participant' %}" class="bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:from-gray-600 hover:to-gray-500 transition duration-300">
+                Create Participant
+            </a>
+            <a href="{% url 'create_category' %}" class="bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:from-gray-600 hover:to-gray-500 transition duration-300">
+                Create Category
+            </a>
+            <a href="{% url 'category_list' %}" class="bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:from-gray-600 hover:to-gray-500 transition duration-300">
+                Category List
+            </a>
+            <a href="{% url 'participant_list' %}" class="bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:from-gray-600 hover:to-gray-500 transition duration-300">
+                Participant List
+            </a>
+
+        </div>
+
+
+        <div class="grid gap-4">
+            <!-- Table Header -->
+            <div class="grid grid-cols-5 text-gray-500 font-bold">
+                <h1>EVENT NAME</h1>
+                <h1>TIME</h1>
+                <h1>LOCATION</h1>
+                <h1>DATE</h1>
+                <h1>PARTICIPANTS</h1>
+            </div>
+    
+        <!-- Container for the table -->
+        {% for event in events %}
+
+            <div class="grid grid-cols-5 items-center border-t border-gray-200 pt-2">
+                <div class="flex items-center gap-2">
+                    <div class="h-2 w-2 bg-green-500 rounded-full"></div>
+                    <h1 class="text-sm">{{event.name}}</h1>
+
+                    <a href="{% url 'update_event' event.id %}" class="bg-gradient-to-r from-gray-700 to-gray-500 text-white font-semibold px-2 py-1 rounded-lg shadow-md hover:from-gray-600 hover:to-gray-500 transition duration-300">Edit</a>
+                    <form action="{% url 'delete_event' event.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-gradient-to-r from-red-700 to-red-500 text-white font-semibold px-1 py-1 rounded-lg shadow-md hover:from-red-600 hover:to-red-500 transition duration-300">Delete</button>
+                    </form>
+
+                </div>
+                <div>
+                    <span class="px-3 py-1 rounded bg-blue-100 text-blue-600 text-sm">{{event.time}}</span>
+                </div>
+                <div class="text-sm">{{event.location}}</div>
+                <div class="text-sm text-gray-500">{{event.date}}</div>
+                <div class="text-sm text-gray-500">{{event.participant_count}}</div>
+            </div>
+        {% endfor %}
+        </div>
+
+    </div>
+    
+
+</body>
+</html>
