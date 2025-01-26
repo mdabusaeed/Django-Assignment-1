@@ -67,7 +67,7 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='postgres://postgres:1234@localhost:5432/event-management'),
+        default='postgresql://event_management_db_vd2z_user:iPuFN2UgBOjBtSQMscKGfLoRwgLiNRgb@dpg-cub04qhopnds73efd9gg-a.oregon-postgres.render.com/event_management_db_vd2z',
         conn_max_age=600,
     )
 }
