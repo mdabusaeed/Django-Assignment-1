@@ -2,7 +2,7 @@ from pathlib import Path
 from decouple import config
 import dj_database_url
 import os
-
+DEBUG = True
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -12,8 +12,8 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 
 # Allowed hosts and CSRF trusted origins
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1').split(',')
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://127.0.0.1:8000').split(',')
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
 
 # Application definition
 INSTALLED_APPS = [
@@ -28,7 +28,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -36,7 +35,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
