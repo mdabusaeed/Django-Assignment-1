@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-400 p-6">
+    
+    <!-- Main container -->
+    <div class="bg-white text-gray-900 shadow-lg rounded-xl p-8 max-w-lg w-full border border-gray-300">
+        
+        <!-- Header -->
+        <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-8">
+            Welcome Back! 
+        </h1>
+
+        <!-- Display messages -->
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="px-4 py-2 text-white font-medium rounded-md 
+                        {% if message.tags == 'success' %} bg-green-500 
+                        {% elif message.tags == 'error' %} bg-red-500 
+                        {% else %} bg-yellow-500 {% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="POST">
+            {% csrf_token %}  <!-- ✅ CSRF Token must be inside the form -->
+            {{ form.as_p }}
+            <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg shadow-md hover:bg-indigo-500 transition duration-300">
+                Sign In
+            </button>
+        </form>
+        
+
+        <!-- Admin credentials displayed below -->
+        <div class="mt-8 text-center text-sm text-gray-600">
+            <p>Admin Username: <strong class="text-gray-900">{{ admin_username }}</strong></p>
+            <p>Use the correct password for login.</p>
+        </div>
+    </div>
+
+{% endblock content  %}

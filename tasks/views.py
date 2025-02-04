@@ -138,9 +138,9 @@ def participant_list(request):
     }
     return render(request, 'dashboard/participant_list.html', context)
 
-def home_page(request):
+def home(request):
     events = Event.objects.all()  
-    return render(request, 'dashboard/home.html', {'events': events})
+    return render(request, 'home.html', {'events': events})
 
 def event_page(request):
     query = request.GET.get('query', '')

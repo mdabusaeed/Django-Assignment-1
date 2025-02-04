@@ -4,8 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+
 urlpatterns = [
-    path('home/', home_page, name='home'),
+
     path('manager-dashboard/', manager_dashboard, name='manager-dashboard'),
     path('event-list/', event_list, name='event-list'),
     path('update-event/<int:id>/', update_event, name='update_event'),
@@ -16,7 +17,7 @@ urlpatterns = [
     path('categories/', category_list, name='category_list'),
     path('participant-list/', participant_list, name='participant_list'),
     path('event/', event_page, name='event'),
-    path('home/', home_page, name='home'),
+    # path('home/', home_page, name='home'),
     
 ]
 

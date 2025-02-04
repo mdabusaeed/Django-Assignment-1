@@ -36,7 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tasks',  # Your app
+    'tasks',
+    'users',
+    'core'
 ]
 
 # Add debug_toolbar only in debug mode
@@ -63,7 +65,10 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Global templates folder
+        'DIRS': [
+            BASE_DIR / "templates",  # ✅ Ensure this includes the main templates folder
+            BASE_DIR / "core" / "templates",  # ✅ Ensure Django checks core/templates
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

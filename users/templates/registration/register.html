@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-400 p-6">
+    
+    <!-- Main container -->
+    <div class="bg-white text-gray-900 shadow-lg rounded-xl p-8 max-w-lg w-full border border-gray-300">
+        <!-- Header -->
+        <h1 class="text-3xl font-bold text-center text-black mb-6">
+            Welcome to Authentication System
+        </h1>
+
+        <!-- Display Success Message -->
+
+        {% if messages %}
+            <div id="success-message" class="bg-green-500 text-white px-4 py-2 rounded-lg text-center mb-4">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+            
+            <script>
+                setTimeout(function() {
+                    document.getElementById('success-message').style.display = 'none';
+                }, 5000);
+            </script>
+        {% endif %}
+
+        <!-- Display Error Message -->
+
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+
+            <script>
+                setTimeout(function() {
+                    document.getElementById('error-message').style.display = 'none';
+                }, 5000);
+            </script>
+        {% endif %}
+
+            <!-- Registration Form -->
+            <div id="signup-form">
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+                    <div class="space-y-4">
+                        {{ form.as_p }} 
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-gray-700 text-gray-200 font-medium py-2 rounded-lg hover:bg-gray-600 transition duration-300">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            
+            </form>
+        </div>
+    </div>
+
+</body>
+
+{% endblock content %}

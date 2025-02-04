@@ -1,7 +1,12 @@
 from django import forms
 from tasks.models import Event, Participant, Category
 
+
 class StyleForMixin:
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.apply_style_widged()
+        
     default_classes = "border-2 border-blue-300 w-full px-4 py-2 rounded-lg shadow-md bg-gradient-to-r from-blue-100 to-blue-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300"
     def apply_style_widged(self):
         for field_name,field in self.fields.items():
