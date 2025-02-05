@@ -17,7 +17,7 @@ urlpatterns = [
     path('categories/', category_list, name='category_list'),
     path('participant-list/', participant_list, name='participant_list'),
     path('event/', event_page, name='event'),
-    # path('home/', home_page, name='home'),
+
     
 ]
 

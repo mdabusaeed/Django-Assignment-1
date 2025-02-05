@@ -15,22 +15,23 @@ class UserCreationForm(StyleForMixin, forms.ModelForm):
     def clean_password(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
+        errors = []
+        if len(password1) < 8:
+            errors.append('Password must be at least 8 characters long.')
 
-        if password1 != password2:
-            raise forms.ValidationError("Passwords do not match")
-        
-        if len(password1) <8:
-            raise forms.ValidationError("Password is too short")
-        if not re.search(r'[A-Z]',password1):
-            raise forms.ValidationError("Password must contain at least one uppercase letter")
-        if not re.search(r'[a-z]',password1):
-            raise forms.ValidationError("Password must contain at least one lowercase letter")
-        if not re.search(r'[0-9]',password1):
-            raise forms.ValidationError("Password must contain at least one number")
-        if not re.search(r'[!@#$%^&*()_+]',password1):
-            raise forms.ValidationError("Password must contain at least one special character")
-        
-        return password1
+        if not re.search(r'[A-Z]', password1):
+            errors.append('Password must contain at least one uppercase letter.')
+        if not re.search(r'[a-z]', password1):
+            errors.append('Password must contain at least one lowercase letter.')
+        if not re.search(r'[0-9]', password1):
+            errors.append('Password must contain at least one digit.')
+        if not re.search(r'[@#$%^&+=]', password1):
+            errors.append('Password must contain at least one special character (@#$%^&+=).')
+
+        if errors:
+            raise forms.ValidationError(errors)
+
+        return password2
     
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)

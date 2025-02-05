@@ -1,11 +1,13 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import HttpResponse
-from tasks.forms import EventForm, ParticipantForm, CategoryForm
+from tasks.forms import EventForm, CategoryForm, ParticipantForm
 from tasks.models import *
 from datetime import date ,timedelta
 from django.db.models import Q, Count, Sum, Avg, Max, Min
 from django.contrib import messages
 from django.utils.timezone import localdate, now
+from django.contrib.auth.models import User, Group
+
 
 # Create your views here.
 def home(request):
@@ -31,7 +33,7 @@ def manager_dashboard(request):
     )
 
     if query_type == 'total_participants':
-        total_participants = Participant.objects.aggregate(total_participants=Count('id'))['total_participants']
+        total_participants = User.objects.aggregate(total_participants=Count('id'))['total_participants'] #
         events = base_query.none() 
     elif query_type == 'all_events':
         events = base_query
@@ -81,9 +83,6 @@ def update_event(request, id):
             return redirect('update_event',id)  
     return render(request, 'dashboard/create_event.html', {'create_event': form})
 
-
-
-
          
 def delete_event(request, id):
     if request.method == 'POST':
@@ -100,19 +99,45 @@ def event_list(request):
     events = Event.objects.all()
     return render(request, 'dashboard/create_event.html', {'events': events})
 
-
+# 
 def create_participant(request):
+    form = ParticipantForm()
     if request.method == 'POST':
         form = ParticipantForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Participant created successfully!")
-            return redirect('participant_list')  
+            user = form.save(commit=False)
+            user.username = user.email  
+            user.set_password("defaultpassword") 
+            user.save()
+            form.save_m2m()
+
+            viewer_group = Group.objects.get(name='Participant')
+            user.groups.add(viewer_group)
+            user.save() 
+
+            user.event_participants.set(form.cleaned_data['events'])  
+            user.save()
+
+            messages.success(request, "User created successfully!")
+            return redirect('participant_list')
         else:
-            messages.error(request, "Error creating participant. Please check the form.")
+            messages.error(request, "Error creating user. Please check the form.")
     else:
         form = ParticipantForm()
-    return render(request, 'dashboard/create_participant.html', {'create_participant': form})
+    return render(request, 'dashboard/create_participant.html', {'form': form})
+
+
+# 
+def participant_list(request):
+
+    participants = User.objects.prefetch_related('event_participants').all()
+
+    context = {
+        'participants': participants,  
+    }
+    return render(request, 'dashboard/participant_list.html', context)
+
+
 
 def create_category(request):
     if request.method == 'POST':
@@ -129,14 +154,9 @@ def category_list(request):
     categories = Category.objects.all()
     return render(request, 'dashboard/category_list.html', {'categories': categories})
 
-def participant_list(request):
 
-    participants = Participant.objects.prefetch_related('events').all()
 
-    context = {
-        'participants': participants,
-    }
-    return render(request, 'dashboard/participant_list.html', context)
+
 
 def home(request):
     events = Event.objects.all()  

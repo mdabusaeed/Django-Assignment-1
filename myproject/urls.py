@@ -10,7 +10,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('tasks/', include('tasks.urls')),
     path('users/', include('users.urls')),
-    path('',home,name='home')
+    path('',home,name='home'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG:

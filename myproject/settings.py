@@ -84,12 +84,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 # Database configuration
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgresql://event_management_db_vd2z_user:iPuFN2UgBOjBtSQMscKGfLoRwgLiNRgb@dpg-cub04qhopnds73efd9gg-a.oregon-postgres.render.com/event_management_db_vd2z',
+#         conn_max_age=600,
+#     )
+# }
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://event_management_db_vd2z_user:iPuFN2UgBOjBtSQMscKGfLoRwgLiNRgb@dpg-cub04qhopnds73efd9gg-a.oregon-postgres.render.com/event_management_db_vd2z',
-        conn_max_age=600,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'event_management',  
+        'USER': 'postgres',        
+        'PASSWORD': '1234', 
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -113,3 +125,14 @@ if DEBUG:
     INTERNAL_IPS = [
         '127.0.0.1',  # Localhost
     ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587 
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER='abu.saeed.nicl@gmail.com'
+EMAIL_HOST_PASSWORD='ffgf igrs ujto mmrn'
+
+FRONTEND_URL =  'http://127.0.0.1:8000/'
+
+LOGIN_URL = 'sign-in'

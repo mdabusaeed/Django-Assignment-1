@@ -1,5 +1,6 @@
 from django import forms
-from tasks.models import Event, Participant, Category
+from tasks.models import Event, Category
+from django.contrib.auth.models import User
 
 
 class StyleForMixin:
@@ -47,14 +48,16 @@ class EventForm(StyleForMixin, forms.ModelForm):
         super().__init__(*args,**kwargs)
         self.apply_style_widged()
 
-class ParticipantForm(forms.ModelForm):
+class ParticipantForm(StyleForMixin,forms.ModelForm):  
     class Meta:
-        model = Participant
-        fields = ['name', 'email', 'events']
-        
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.apply_style_widged()
+        model = User  
+        fields = ['email', 'first_name', 'last_name'] 
+        widgets = {
+            'events': forms.CheckboxSelectMultiple(),  
+        }
+
+    events = forms.ModelMultipleChoiceField(queryset=Event.objects.all(), required=False)
+
 
 class CategoryForm(StyleForMixin,forms.ModelForm):
     class Meta:
@@ -65,13 +68,3 @@ class CategoryForm(StyleForMixin,forms.ModelForm):
         super().__init__(*args,**kwargs)
         self.apply_style_widged() 
 
-class ParticipantForm(StyleForMixin,forms.ModelForm):
-    class Meta:
-        model = Participant
-        fields = ['name', 'email', 'events']
-        widgets = {
-            'events': forms.CheckboxSelectMultiple(),  
-        }
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.apply_style_widged()

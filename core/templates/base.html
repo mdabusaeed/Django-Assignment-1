@@ -20,11 +20,23 @@
   </head>
 
   <body class="font-sans bg-gray-100">
-    {% if request.user.is_authenticated %}
-      {% include "loged-navbar.html" %}
-    {% else %}
-      {% include "non-log-navbar.html" %}
-    {% endif %} 
+    {% if request.user.groups.all %}
+    {% with request.user.groups.all.0.name as group_name %}
+      {% if group_name == "admin" %}
+        {% include "admin-navbar.html" %}
+      {% elif group_name == "organizer" %}
+        {% include "organizer-navbar.html" %}
+      {% elif group_name == "participant" %}
+        {% include "participant-navbar.html" %}
+      {% else %}
+        {% include "non-log-navbar.html" %}
+      {% endif %}
+    {% endwith %}
+  {% else %}
+    {% include "non-log-navbar.html" %}
+  {% endif %}
+
+
 
     <main>
         {% block content %}
