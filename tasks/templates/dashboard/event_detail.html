@@ -1,0 +1,63 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+Bengali:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+
+<div class="min-h-screen bg-gray-100 flex items-center justify-center py-10">
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-2xl w-full border border-gray-300">
+        
+        <!-- Event Name -->
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">{{ event.name }}</h2>
+
+        <!-- Event Date, Time & Location -->
+        <div class="text-gray-600 mb-4">
+            📅 <span class="font-semibold">Date:</span> {{ event.date }}  
+            ⏰ <span class="font-semibold">Time:</span> {{ event.time }}  
+            📍 <span class="font-semibold">Location:</span> {{ event.location }}
+        </div>
+
+        <!-- Event Description -->
+        <p class="text-gray-700 leading-relaxed mb-6 border-l-4 border-gray-500 pl-4 italic">
+            {{ event.description }}
+        </p>
+
+        <!-- Participants Section -->
+        <div class="bg-gray-200 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold text-gray-700">🎉 Participants:</h3>
+            <ul class="mt-2">
+                {% for user in event.rsvp_users.all %}
+                    <li class="text-gray-800 bg-gray-300 px-3 py-1 inline-block rounded-md mr-2 mb-2">
+                        {{ user.username }}
+                    </li>
+                {% empty %}
+                    <p class="text-gray-500 italic">No one has RSVP’d yet.</p>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Back to Events Button -->
+        <div class="mt-6 text-center">
+            <a href="{% url 'event' %}" class="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-900 transition">
+                🔙 Back to Events
+            </a>
+        </div>
+
+    </div>
+</div>

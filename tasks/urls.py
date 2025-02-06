@@ -17,9 +17,10 @@ urlpatterns = [
     path('categories/', category_list, name='category_list'),
     path('participant-list/', participant_list, name='participant_list'),
     path('event/', event_page, name='event'),
+    path('organizer-dashboard/', organizer_dashboard, name='organizer-dashboard'),
+    path('event/<int:id>/rsvp/', rsvp_event, name='rsvp_event'),  # ✅ Fixed URL name
+    path('event/<int:id>/', event_detail, name='event_detail'),
 
-    
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

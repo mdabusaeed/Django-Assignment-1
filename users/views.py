@@ -84,22 +84,6 @@ def assign_role(request, user_id):
 
     return render(request, 'admin/assign-role.html', {'form': form, 'user': user})
 
-# @user_passes_test(is_admin, login_url='no-permission')
-# def assign_role(request, user_id):
-#     user = User.objects.get(id=user_id)
-#     form = AssignRollFrom()
-
-#     if request.method == 'POST':
-#         form = AssignRollFrom(request.POST)
-#         if form.is_valid():
-#             role = form.cleaned_data.get('role')
-#             user.groups.clear()
-#             user.groups.add(role)
-#             messages.success(request, f"{user.username} has been assigned the role of {role}")
-#             # return redirect('assign-role', user_id=user_id)
-#             return redirect(reverse('assign-role', args=[user_id])) 
-        
-#     return render(request, 'admin/assign-role.html', {'form': form, 'user': user})
 
 
 @user_passes_test(is_admin, login_url='no-permission')
@@ -141,3 +125,5 @@ from django.shortcuts import render
 def home(request):
     print(f"DEBUG: Current logged-in user: {request.user}")  # Should print "Babor"
     return render(request, "home.html")
+
+

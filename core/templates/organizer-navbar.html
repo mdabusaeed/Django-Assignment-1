@@ -1,24 +1,31 @@
 <header class="bg-gray-900 shadow-md rounded-md">
     <nav class="container mx-auto px-6 py-3">
       <div class="flex justify-between items-center">
-        <a href="index.html" class="text-xl font-bold text-white"
+        <a href="#" class="text-xl font-bold text-white"
           >One Event </a
         >
         <div class="hidden md:flex space-x-4">
-
           <a
-            href="{% url 'admin-dashboard' %}"
+            href="{% url 'organizer-dashboard' %}"
             class="text-gray-200 hover:text-gray-400"
-            >Dashboard</a
+            >Organizer Dashboard</a
           >
 
-          <a href="{% url 'group-list' %}" class="text-gray-200 hover:text-gray-400"
-            >Groups</a
+          <a
+            href="{% url 'create_event' %}"
+            class="text-gray-200 hover:text-gray-400"
+            >Create Event</a
+          >
+
+          <a
+            href="{% url 'create_category' %}"
+            class="text-gray-200 hover:text-gray-400"
+            >Create Category</a
           >
           <a
-            href="{% url 'create-group' %}"
-            class="text-gray-200 hover:text-gray-400"
-            >Create Group</a
+          href="{% url 'event' %}"
+          class="text-gray-200 hover:text-gray-400"
+          >All Event</a
           >
         </div>
         <div class="flex items-center">

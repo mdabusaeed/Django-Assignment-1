@@ -7,6 +7,9 @@ from django.db.models import Q, Count, Sum, Avg, Max, Min
 from django.contrib import messages
 from django.utils.timezone import localdate, now
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 # Create your views here.
@@ -58,6 +61,54 @@ def manager_dashboard(request):
     }
 
     return render(request, "dashboard/manager_dashboard.html", context)
+# Create your views here.
+
+
+def organizer_dashboard(request):
+    query_type = request.GET.get('type', 'all')
+    today = localdate()
+    tomorrow = today + timedelta(days=1)
+
+    start_of_today = now().replace(hour=0, minute=0, second=0, microsecond=0)
+    end_of_today = now().replace(hour=23, minute=59, second=59, microsecond=999999)
+
+    base_query = Event.objects.select_related('category').prefetch_related('participants').annotate(
+        participant_count=Count('participants')
+    )
+
+    event_stats = base_query.aggregate(
+        total_events=Count('id'),
+        past_events=Count('id', filter=Q(date__lt=today)),
+        today_events=Count('id', filter=Q(date__range=(start_of_today, end_of_today))),
+        upcoming_events=Count('id', filter=Q(date__gte=tomorrow)),
+    )
+
+    if query_type == 'total_participants':
+        total_participants = User.objects.aggregate(total_participants=Count('id'))['total_participants'] #
+        events = base_query.none() 
+    elif query_type == 'all_events':
+        events = base_query
+    elif query_type == 'past_events':
+        events = base_query.filter(date__lt=today)
+    elif query_type == 'today_events':
+        events = base_query.filter(date__range=(start_of_today, end_of_today))
+    elif query_type == 'upcoming_events':
+        events = base_query.filter(date__gte=tomorrow)
+    else:  # Default: show all events
+        events = base_query
+
+    total_participants = event_stats.get('total_participants', 0)
+
+    context = {
+        'events': events,
+        'total_events': event_stats['total_events'],
+        'past_events': event_stats['past_events'],
+        'today_events': event_stats['today_events'],
+        'upcoming_events': event_stats['upcoming_events'],
+        'total_participants': total_participants,
+    }
+
+    return render(request, "dashboard/organizer_dashboard.html", context)
 
 
 # Create your views here.
@@ -71,6 +122,8 @@ def create_event(request):
             messages.success(request, "Event created successfully!")
             return redirect('create_event')  
     return render(request, 'dashboard/create_event.html', {'create_event': form})
+
+
 
 def update_event(request, id):
     event = get_object_or_404(Event, id=id)
@@ -185,5 +238,28 @@ def event_page(request):
         'selected_category': category_id,
     })
 
+@login_required
+def rsvp_event(request, id):
+    event = get_object_or_404(Event, id=id)
 
+    if request.user in event.rsvp_users.all():
+        messages.warning(request, "You have already RSVPed to this event.")
+    else:
+        event.rsvp_users.add(request.user)
+        messages.success(request, f"You have successfully RSVPed for {event.name}.")
+
+        # Send confirmation email
+        send_mail(
+            subject="RSVP Confirmation",
+            message=f"Hi {request.user.first_name},\n\nYou have successfully RSVP'd for {event.name} on {event.date} at {event.time}.",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[request.user.email],
+            fail_silently=False,
+        )
+
+    return redirect('event_detail', id=id) 
+
+def event_detail(request, id):
+    event = get_object_or_404(Event, id=id)
+    return render(request, 'dashboard/event_detail.html', {'event': event})
 
