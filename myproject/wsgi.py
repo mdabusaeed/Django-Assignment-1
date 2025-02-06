@@ -11,6 +11,11 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 
+# application = get_wsgi_application()
+os.environ.setdefault("PORT", "8000")  # Default to 8000
+port = os.environ.get("PORT", "8000")  # Get Render’s assigned port
+
+print(f"Starting server on port {port}...")  # Debugging info
 application = get_wsgi_application()

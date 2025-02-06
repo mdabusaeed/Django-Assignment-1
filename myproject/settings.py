@@ -17,7 +17,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_ROOT = BASE_DIR / 'media'
 
 
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-9ab2w4)bm8fw+lxjr=k4hm9+nvq7f*o8cf^2*f+7!l6ym7a=!3')
@@ -84,23 +84,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 # Database configuration
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='postgresql://event_management_db_vd2z_user:iPuFN2UgBOjBtSQMscKGfLoRwgLiNRgb@dpg-cub04qhopnds73efd9gg-a.oregon-postgres.render.com/event_management_db_vd2z',
-#         conn_max_age=600,
-#     )
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'event_management',  
-        'USER': 'postgres',        
-        'PASSWORD': '1234', 
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://event_management_db_vd2z_user:iPuFN2UgBOjBtSQMscKGfLoRwgLiNRgb@dpg-cub04qhopnds73efd9gg-a.oregon-postgres.render.com/event_management_db_vd2z',
+        conn_max_age=600,
+    )
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'event_management',  
+#         'USER': 'postgres',        
+#         'PASSWORD': '1234', 
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
 

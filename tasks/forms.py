@@ -48,6 +48,8 @@ class EventForm(StyleForMixin, forms.ModelForm):
         super().__init__(*args,**kwargs)
         self.apply_style_widged()
 
+
+
 class ParticipantForm(StyleForMixin,forms.ModelForm):  
     class Meta:
         model = User  

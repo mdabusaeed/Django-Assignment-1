@@ -8,12 +8,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),  # ✅ Keep this OR use the one below
+    path('', views.home, name='home'),  
     path('tasks/', include('tasks.urls')),
     path('users/', include('users.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG:
-    # import debug_toolbar urlpatterns += [path('__debug__/', include(debug_toolbar.urls)),]
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     # import debug_toolbar urlpatterns += [path('__debug__/', include(debug_toolbar.urls)),]
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
