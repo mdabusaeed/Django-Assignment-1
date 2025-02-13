@@ -10,6 +10,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.generic.edit import View
 
 
 # Create your views here.
@@ -111,18 +112,20 @@ def organizer_dashboard(request):
     return render(request, "dashboard/organizer_dashboard.html", context)
 
 
-# Create your views here.
+class CreateEventView(View):
+    template_name = 'dashboard/create_event.html'
 
-def create_event(request):
-    form = EventForm()
-    if request.method == 'POST':
+    def get(self, request):
+        form = EventForm()
+        return render(request, self.template_name, {'create_event': form})
+    
+    def post(self, request):
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "Event created successfully!")
-            return redirect('create_event')  
-    return render(request, 'dashboard/create_event.html', {'create_event': form})
-
+            return redirect('create_event')
+        return render(request, self.template_name, {'create_event': form})
 
 
 def update_event(request, id):
@@ -136,6 +139,23 @@ def update_event(request, id):
             return redirect('update_event',id)  
     return render(request, 'dashboard/create_event.html', {'create_event': form})
 
+
+class UpdateEventView(View):
+    template_name = 'dashboard/create_event.html'
+
+    def get(self, request, id):
+        event = get_object_or_404(Event, id=id)
+        form = EventForm(instance=event)
+        return render(request, self.template_name, {'create_event': form})
+    
+    def post(self, request,id):
+        event = get_object_or_404(Event, id=id)
+        form = EventForm(request.POST, request.FILES, instance=event)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Event updated successfully!")
+            return redirect('update_event',id)  
+        return render(request, self.template_name, {'create_event': form})
          
 def delete_event(request, id):
     if request.method == 'POST':

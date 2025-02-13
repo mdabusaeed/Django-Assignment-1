@@ -12,13 +12,22 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Prefetch
 from django.urls import reverse
+from django.views import View
+from django.urls import reverse_lazy
+from django.contrib.auth.views import LoginView, LogoutView
+ 
 
 def is_admin(user):
     return user.is_superuser or user.groups.filter(name__iexact='admin').exists()
 
-def sign_up(request):
-    if request.method == 'POST':
+class SignUpView(View):
+    template_name = 'registration/register.html'
 
+    def get(self, request, *args, **kwargs):
+        form = UserCreationForm()
+        return render(request, self.template_name, {'form': form})
+    
+    def post(self, request, *args, **kwargs):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
@@ -27,31 +36,21 @@ def sign_up(request):
             user.save()
             messages.success(request, "Please check your email to activate your account.") 
             return redirect('sign-in')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
+        return render(request, self.template_name, {'form': form})
 
 
-def sign_in(request):
-    form = LoginForm()
-    if request.method == 'POST':
-        csrf_token = request.POST.get('csrfmiddlewaretoken')
-        form = LoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('home')
+class SignInView(LoginView):
+    template_name = 'registration/login.html'
+    authentication_form = LoginForm
+    redirect_authenticated_user = True 
 
-    return render(request, 'registration/login.html', {'form': form})  
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        return next_url if next_url else reverse_lazy('home') 
 
-
-
-
-@login_required
-def sign_out(request):
-    if request.method == 'POST':
-        logout(request)
-        return redirect('sign-in')
+    
+class SignOutView(LogoutView):
+    next_page = reverse_lazy('sign-in')
 
 
 def activate_user(request, user_id, token):
