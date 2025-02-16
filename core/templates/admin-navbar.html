@@ -7,6 +7,11 @@
         <div class="hidden md:flex space-x-4">
 
           <a
+            href="{% url 'profile' %}"
+            class="text-gray-200 hover:text-gray-400"
+            >Profile</a
+          >
+          <a
             href="{% url 'manager-dashboard' %}"
             class="text-gray-200 hover:text-gray-400"
             >Admin Dashboard</a
@@ -14,7 +19,7 @@
           <a
             href="{% url 'admin-dashboard' %}"
             class="text-gray-200 hover:text-gray-400"
-            >Dashboard</a
+            >User Dashboard</a
           >
 
           <a href="{% url 'group-list' %}" class="text-gray-200 hover:text-gray-400"

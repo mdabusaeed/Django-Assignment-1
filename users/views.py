@@ -15,6 +15,11 @@ from django.urls import reverse
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic import TemplateView
+from users.forms import PasswordChangeFormView, CustomPasswordResetFormView, CustomSetPasswordForm
+from django.contrib.auth.views import PasswordResetView, PasswordChangeView, PasswordResetConfirmView
+from django.contrib.auth.forms import SetPasswordForm
+
  
 
 def is_admin(user):
@@ -40,13 +45,11 @@ class SignUpView(View):
 
 
 class SignInView(LoginView):
-    template_name = 'registration/login.html'
     authentication_form = LoginForm
-    redirect_authenticated_user = True 
 
     def get_success_url(self):
         next_url = self.request.GET.get('next')
-        return next_url if next_url else reverse_lazy('home') 
+        return next_url if next_url else super().get_success_url()
 
     
 class SignOutView(LogoutView):
@@ -126,3 +129,63 @@ def home(request):
     return render(request, "home.html")
 
 
+class ProfileView(TemplateView):
+    template_name = 'accounts/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        context['username'] = user.username
+        context['email'] = user.email
+        context['name'] = user.get_full_name()
+        # context['mobile'] = user.mobile
+        # context['profileImage'] = user.profileImage
+        # context['join_since'] = user.date_joined
+        # context['last_joined'] = user.last_login
+
+        return context
+    
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    form_class = PasswordChangeFormView
+
+    success_url = reverse_lazy('sign-in')  
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Your password has been changed successfully. Please log in again.")
+        logout(self.request)  
+        return response
+
+
+
+
+
+class CustomPasswordResetView(PasswordResetView):
+    form_name = CustomPasswordResetFormView
+    template_name =  'registration/reset_password.html'
+    success_url = reverse_lazy('sign-in')
+    html_email_template_name = 'registration/reset_email.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['protocol'] = 'https' if self.request.is_secure() else 'http'
+        context['domain'] = self.request.get_host()
+        return context
+    
+    def form_valid(self, form):
+        messages.success(self.request, "Please check your email to reset your password.")
+        return super().form_valid(form)
+
+
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class = CustomSetPasswordForm
+    template_name = 'registration/reset_password.html'
+    success_url = reverse_lazy('sign-in')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Your password has been reset successfully.")
+        return super().form_valid(form)
