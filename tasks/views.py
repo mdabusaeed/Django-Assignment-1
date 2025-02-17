@@ -6,13 +6,15 @@ from datetime import date ,timedelta
 from django.db.models import Q, Count, Sum, Avg, Max, Min
 from django.contrib import messages
 from django.utils.timezone import localdate, now
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.generic.edit import View
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 def is_admin(user):
     return user.is_superuser or user.groups.filter(name__iexact='admin').exists()
@@ -205,7 +207,6 @@ def create_participant(request):
     return render(request, 'dashboard/create_participant.html', {'form': form})
 
 
-# 
 def participant_list(request):
 
     participants = User.objects.prefetch_related('event_participants').all()

@@ -1,9 +1,12 @@
 from django import forms
-from django.contrib.auth.models import User, Permission, Group
+from django.contrib.auth.models import Permission, Group
+from django.contrib.auth import get_user_model
 import re
 from tasks.forms import StyleForMixin
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
+from users.models import CustomUser
 
+User = get_user_model()
 class UserCreationForm(StyleForMixin, forms.ModelForm):
     password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
@@ -65,3 +68,8 @@ class CustomPasswordResetFormView(StyleForMixin, PasswordResetForm):
     pass
 class CustomSetPasswordForm(StyleForMixin, SetPasswordForm):
     pass
+
+class EditProfileForm(StyleForMixin,forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields  = ['email', 'first_name', 'last_name', 'mobile','profileImage']

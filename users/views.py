@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect,HttpResponse,get_object_or_404
 from users.forms import UserCreationForm, LoginForm, AssignRollFrom, CreateGroupForm
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
@@ -16,11 +17,13 @@ from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import TemplateView
-from users.forms import PasswordChangeFormView, CustomPasswordResetFormView, CustomSetPasswordForm
+from users.forms import PasswordChangeFormView, CustomPasswordResetFormView, CustomSetPasswordForm, EditProfileForm
 from django.contrib.auth.views import PasswordResetView, PasswordChangeView, PasswordResetConfirmView
 from django.contrib.auth.forms import SetPasswordForm
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
- 
+User = get_user_model()
 
 def is_admin(user):
     return user.is_superuser or user.groups.filter(name__iexact='admin').exists()
@@ -45,14 +48,16 @@ class SignUpView(View):
 
 
 class SignInView(LoginView):
+    template_name = 'registration/login.html'
     authentication_form = LoginForm
+    redirect_authenticated_user = True 
 
     def get_success_url(self):
         next_url = self.request.GET.get('next')
         return next_url if next_url else super().get_success_url()
 
     
-class SignOutView(LogoutView):
+class SignOutView(LoginRequiredMixin,LogoutView):
     next_page = reverse_lazy('sign-in')
 
 
@@ -72,17 +77,17 @@ def activate_user(request, user_id, token):
 
 @user_passes_test(is_admin, login_url='no-permission')
 def assign_role(request, user_id):
-    user = get_object_or_404(User, id=user_id)  # ✅ Prevents errors if user doesn't exist
+    user = get_object_or_404(User, id=user_id)  
     form = AssignRollFrom()
 
     if request.method == 'POST':
         form = AssignRollFrom(request.POST)
         if form.is_valid():
             role = form.cleaned_data.get('role')
-            user.groups.clear()  # ✅ Removes old roles
-            user.groups.add(role)  # ✅ Assigns new role
+            user.groups.clear()  
+            user.groups.add(role)  
             messages.success(request, f"{user.username} has been assigned the role of {role}")
-            return redirect(reverse('assign-role', args=[user_id]))  # ✅ Uses reverse()
+            return redirect(reverse('assign-role', args=[user_id]))  
 
     return render(request, 'admin/assign-role.html', {'form': form, 'user': user})
 
@@ -125,7 +130,7 @@ def group_list(request):
 from django.shortcuts import render
 
 def home(request):
-    print(f"DEBUG: Current logged-in user: {request.user}")  # Should print "Babor"
+    print(f"DEBUG: Current logged-in user: {request.user}")  
     return render(request, "home.html")
 
 
@@ -139,13 +144,14 @@ class ProfileView(TemplateView):
         context['username'] = user.username
         context['email'] = user.email
         context['name'] = user.get_full_name()
-        # context['mobile'] = user.mobile
-        # context['profileImage'] = user.profileImage
-        # context['join_since'] = user.date_joined
-        # context['last_joined'] = user.last_login
+        context['mobile'] = user.mobile
+        context['profileImage'] = user.profileImage
+        context['join_since'] = user.date_joined
+        context['last_joined'] = user.last_login
 
         return context
     
+
 class ChangePasswordView(PasswordChangeView):
     template_name = 'accounts/password_change.html'
     form_class = PasswordChangeFormView
@@ -179,8 +185,6 @@ class CustomPasswordResetView(PasswordResetView):
         return super().form_valid(form)
 
 
-
-
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     form_class = CustomSetPasswordForm
     template_name = 'registration/reset_password.html'
@@ -189,3 +193,16 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     def form_valid(self, form):
         messages.success(self.request, "Your password has been reset successfully.")
         return super().form_valid(form)
+    
+class EditProfileView(UpdateView):
+    model = User
+    form_class = EditProfileForm
+    template_name = 'accounts/update_profile.html'
+    context_object_name = 'form'
+
+    def get_object(self):
+        return self.request.user
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('profile')

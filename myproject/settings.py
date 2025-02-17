@@ -22,6 +22,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-9ab2w4)bm8fw+lxjr=k4hm9+nvq7f*o8cf^2*f+7!l6ym7a=!3')
 DEBUG = config('DEBUG', default=True, cast=bool)
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 ALLOWED_HOSTS = ['*']
